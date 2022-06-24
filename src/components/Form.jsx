@@ -20,9 +20,10 @@ export default class Form extends Component {
       // hasTrunfo,
       isSaveButtonDisabled,
       onInputChange,
-      onSaveButtonClick } = this.props;
+      onSaveButtonClick,
+    } = this.props;
     return (
-      <>
+      <form>
         <input
           type="text"
           name="cardName"
@@ -40,34 +41,34 @@ export default class Form extends Component {
         />
         <input
           type="number"
-          name="cardAtribute1"
+          name="cardAttr1"
           data-testid="attr1-input"
           value={ cardAttr1 }
           onChange={ onInputChange }
         />
         <input
           type="number"
-          name="cardAtribute2"
+          name="cardAttr2"
           data-testid="attr2-input"
           value={ cardAttr2 }
           onChange={ onInputChange }
         />
         <input
           type="number"
-          name="cardAtribute3"
+          name="cardAttr3"
           data-testid="attr3-input"
           onChange={ onInputChange }
           value={ cardAttr3 }
         />
         <input
           type="text"
-          name="cardUrl"
+          name="cardImage"
           data-testid="image-input"
           onChange={ onInputChange }
           value={ cardImage }
         />
         <select
-          name="cardRarity"
+          name="cardRare"
           data-testid="rare-input"
           value={ cardRare }
           onChange={ onInputChange }
@@ -91,7 +92,7 @@ export default class Form extends Component {
         >
           Submit
         </button>
-      </>
+      </form>
     );
   }
 }
