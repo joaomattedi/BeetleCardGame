@@ -8,12 +8,13 @@ class App extends React.Component {
     this.state = {
       cardName: '',
       cardDescription: '',
-      cardAttr1: '',
-      cardAttr2: '',
-      cardAttr3: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
       cardImage: '',
       cardRare: '',
       cardTrunfo: false,
+      cards: [],
     };
   }
 
@@ -29,20 +30,55 @@ class App extends React.Component {
     } = this.state;
     const maxAllSkillPoints = 210;
     const maxSkillPoints = 90;
+
     const sumByAtribute = ((Number(cardAttr1) <= maxSkillPoints)
-        && (Number(cardAttr1) >= 0))
+      && (Number(cardAttr1) >= 0))
       && ((Number(cardAttr2) <= maxSkillPoints)
       && (Number(cardAttr2) >= 0))
       && ((Number(cardAttr3) <= maxSkillPoints)
       && (Number(cardAttr3) >= 0));
+
     const sumTotal = (Number(cardAttr1)
     + Number(cardAttr2)
     + Number(cardAttr3)) <= maxAllSkillPoints;
+
     return !(!!cardDescription
       && cardImage && cardName && cardRare && sumTotal && sumByAtribute);
   }
 
-  onSaveButtonClick = () => false
+  onSaveButtonClick = (event) => {
+    event.preventDefault();
+    const {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardImage,
+      cardRare,
+      cardTrunfo,
+    } = this.state;
+    this.setState(({ cards: prevList }) => ({
+      cards: [...prevList, {
+        cardName,
+        cardDescription,
+        cardAttr1,
+        cardAttr2,
+        cardAttr3,
+        cardImage,
+        cardRare,
+        cardTrunfo,
+      }],
+    }), () => this.setState({
+      cardName: '',
+      cardDescription: '',
+      cardAttr1: '0',
+      cardAttr2: '0',
+      cardAttr3: '0',
+      cardImage: '',
+      cardRare: '',
+    }));
+  }
 
   onInputChange = (event) => {
     const { target } = event;
