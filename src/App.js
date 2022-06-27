@@ -14,8 +14,14 @@ class App extends React.Component {
       cardImage: '',
       cardRare: '',
       cardTrunfo: false,
+      hasTrunfo: false,
       cards: [],
     };
+  }
+
+  validateTrunfo = () => {
+    const { cards } = this.state;
+    return cards.some(({ cardTrunfo: exist }) => exist);
   }
 
   isSaveButtonDisabled = () => {
@@ -77,6 +83,8 @@ class App extends React.Component {
       cardAttr3: '0',
       cardImage: '',
       cardRare: '',
+      cardTrunfo: false,
+      hasTrunfo: this.validateTrunfo(),
     }));
   }
 
