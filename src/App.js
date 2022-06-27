@@ -22,7 +22,7 @@ class App extends React.Component {
   validateTrunfo = () => {
     const { cards } = this.state;
     return cards.some(({ cardTrunfo: exist }) => exist);
-  }
+  };
 
   isSaveButtonDisabled = () => {
     const {
@@ -37,20 +37,25 @@ class App extends React.Component {
     const maxAllSkillPoints = 210;
     const maxSkillPoints = 90;
 
-    const sumByAtribute = ((Number(cardAttr1) <= maxSkillPoints)
-      && (Number(cardAttr1) >= 0))
-      && ((Number(cardAttr2) <= maxSkillPoints)
-      && (Number(cardAttr2) >= 0))
-      && ((Number(cardAttr3) <= maxSkillPoints)
-      && (Number(cardAttr3) >= 0));
+    const sumByAtribute = Number(cardAttr1) <= maxSkillPoints
+      && Number(cardAttr1) >= 0
+      && Number(cardAttr2) <= maxSkillPoints
+      && Number(cardAttr2) >= 0
+      && Number(cardAttr3) <= maxSkillPoints
+      && Number(cardAttr3) >= 0;
 
-    const sumTotal = (Number(cardAttr1)
-    + Number(cardAttr2)
-    + Number(cardAttr3)) <= maxAllSkillPoints;
+    const sumTotal = Number(cardAttr1) + Number(cardAttr2) + Number(cardAttr3)
+      <= maxAllSkillPoints;
 
-    return !(!!cardDescription
-      && cardImage && cardName && cardRare && sumTotal && sumByAtribute);
-  }
+    return !(
+      !!cardDescription
+      && cardImage
+      && cardName
+      && cardRare
+      && sumTotal
+      && sumByAtribute
+    );
+  };
 
   onSaveButtonClick = (event) => {
     event.preventDefault();
@@ -64,29 +69,35 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
     } = this.state;
-    this.setState(({ cards: prevList }) => ({
-      cards: [...prevList, {
-        cardName,
-        cardDescription,
-        cardAttr1,
-        cardAttr2,
-        cardAttr3,
-        cardImage,
-        cardRare,
-        cardTrunfo,
-      }],
-    }), () => this.setState({
-      cardName: '',
-      cardDescription: '',
-      cardAttr1: '0',
-      cardAttr2: '0',
-      cardAttr3: '0',
-      cardImage: '',
-      cardRare: '',
-      cardTrunfo: false,
-      hasTrunfo: this.validateTrunfo(),
-    }));
-  }
+    this.setState(
+      ({ cards: prevList }) => ({
+        cards: [
+          ...prevList,
+          {
+            cardName,
+            cardDescription,
+            cardAttr1,
+            cardAttr2,
+            cardAttr3,
+            cardImage,
+            cardRare,
+            cardTrunfo,
+          },
+        ],
+      }),
+      () => this.setState({
+        cardName: '',
+        cardDescription: '',
+        cardAttr1: '0',
+        cardAttr2: '0',
+        cardAttr3: '0',
+        cardImage: '',
+        cardRare: '',
+        cardTrunfo: false,
+        hasTrunfo: this.validateTrunfo(),
+      }),
+    );
+  };
 
   onInputChange = (event) => {
     const { target } = event;
@@ -96,7 +107,7 @@ class App extends React.Component {
     this.setState({
       [name]: value,
     });
-  }
+  };
 
   render() {
     const {
@@ -108,6 +119,7 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
+      cards,
     } = this.state;
     return (
       <div>
@@ -128,6 +140,30 @@ class App extends React.Component {
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
         />
+        {cards.map(
+          ({
+            cardName: name,
+            cardDescription: desc,
+            cardAttr1: atr1,
+            cardAttr2: atr2,
+            cardAttr3: atr3,
+            cardImage: img,
+            cardRare: rare,
+            cardTrunfo: trunfo,
+          }) => (
+            <Card
+              key={ name }
+              cardName={ name }
+              cardDescription={ desc }
+              cardAttr1={ atr1 }
+              cardAttr2={ atr2 }
+              cardAttr3={ atr3 }
+              cardImage={ img }
+              cardRare={ rare }
+              cardTrunfo={ trunfo }
+            />
+          ),
+        )}
       </div>
     );
   }
