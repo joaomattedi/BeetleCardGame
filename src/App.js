@@ -109,6 +109,19 @@ class App extends React.Component {
     });
   };
 
+  renewCards = (key) => {
+    const { hasTrunfo } = this.state;
+    this.setState(({ cards: prevList }) => ({
+      cards: (prevList.filter(({ cardName }) => cardName !== key)),
+    }), () => {
+      if (hasTrunfo) {
+        this.setState({
+          hasTrunfo: this.validateTrunfo(),
+        });
+      }
+    });
+  }
+
   render() {
     const {
       cardName,
@@ -139,6 +152,8 @@ class App extends React.Component {
           cardImage={ cardImage }
           cardRare={ cardRare }
           cardTrunfo={ cardTrunfo }
+          buttonDelete={ false }
+          renewCards={ this.renewCards }
         />
         {cards.map(
           ({
@@ -161,6 +176,8 @@ class App extends React.Component {
               cardImage={ img }
               cardRare={ rare }
               cardTrunfo={ trunfo }
+              buttonDelete
+              renewCards={ this.renewCards }
             />
           ),
         )}
