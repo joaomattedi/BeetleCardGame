@@ -18,6 +18,8 @@ class App extends React.Component {
       hasTrunfo: false,
       cards: [],
       filterName: '',
+      filterRare: 'todas',
+      filterTrunfo: false,
     };
   }
 
@@ -25,6 +27,27 @@ class App extends React.Component {
     this.setState({
       filterName: event.target.value,
     });
+  }
+
+  setRareFilter = (event) => {
+    this.setState({
+      filterRare: (event.target.value),
+    });
+  }
+
+  setTrunfoFilter = () => {
+    this.setState(({ filterTrunfo: filter }) => ({
+      filterTrunfo: !filter,
+    }));
+  }
+
+  fillCards = () => {
+    const { cards, filterTrunfo, filterName, filterRare } = this.state;
+    const filteredCards = cards
+      .filter((card) => ((filterTrunfo) ? card.cardTrunfo : true))
+      .filter((card) => (filterRare === 'todas' ? true : card.cardRare === filterRare))
+      .filter((card) => (!filterName ? true : card.cardName.includes(filterName)));
+    return filteredCards;
   }
 
   validateTrunfo = () => {
@@ -131,6 +154,7 @@ class App extends React.Component {
   }
 
   render() {
+    // console.log(this.fillCards());
     const {
       cardName,
       cardDescription,
@@ -140,8 +164,9 @@ class App extends React.Component {
       cardImage,
       cardRare,
       cardTrunfo,
-      cards,
-      filterName,
+      // cards,
+      // filterName,
+      filterTrunfo,
     } = this.state;
     return (
       <div>
@@ -164,9 +189,14 @@ class App extends React.Component {
           buttonDelete={ false }
           renewCards={ this.renewCards }
         />
-        <Filter setNameFilter={ this.setNameFilter } />
+        <Filter
+          setNameFilter={ this.setNameFilter }
+          setTrunfoFilter={ this.setTrunfoFilter }
+          setRareFilter={ this.setRareFilter }
+          filterTrunfo={ filterTrunfo }
+        />
 
-        {!filterName ? cards.map(
+        {this.fillCards().map(
           ({
             cardName: name,
             cardDescription: desc,
@@ -178,32 +208,6 @@ class App extends React.Component {
             cardTrunfo: trunfo,
           }) => (
             <Card
-              key={ name }
-              cardName={ name }
-              cardDescription={ desc }
-              cardAttr1={ atr1 }
-              cardAttr2={ atr2 }
-              cardAttr3={ atr3 }
-              cardImage={ img }
-              cardRare={ rare }
-              cardTrunfo={ trunfo }
-              buttonDelete
-              renewCards={ this.renewCards }
-            />
-          ),
-        ) : cards.map(
-          ({
-            cardName: name,
-            cardDescription: desc,
-            cardAttr1: atr1,
-            cardAttr2: atr2,
-            cardAttr3: atr3,
-            cardImage: img,
-            cardRare: rare,
-            cardTrunfo: trunfo,
-          }) => (
-            name.includes(filterName)
-            && <Card
               key={ name }
               cardName={ name }
               cardDescription={ desc }
