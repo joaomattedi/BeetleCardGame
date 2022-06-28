@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from './components/Card';
+import Filter from './components/Filter';
 import Form from './components/Form';
 
 class App extends React.Component {
@@ -16,7 +17,14 @@ class App extends React.Component {
       cardTrunfo: false,
       hasTrunfo: false,
       cards: [],
+      filterName: '',
     };
+  }
+
+  setNameFilter = (event) => {
+    this.setState({
+      filterName: event.target.value,
+    });
   }
 
   validateTrunfo = () => {
@@ -92,7 +100,7 @@ class App extends React.Component {
         cardAttr2: '0',
         cardAttr3: '0',
         cardImage: '',
-        cardRare: '',
+        cardRare: 'normal',
         cardTrunfo: false,
         hasTrunfo: this.validateTrunfo(),
       }),
@@ -133,6 +141,7 @@ class App extends React.Component {
       cardRare,
       cardTrunfo,
       cards,
+      filterName,
     } = this.state;
     return (
       <div>
@@ -155,7 +164,9 @@ class App extends React.Component {
           buttonDelete={ false }
           renewCards={ this.renewCards }
         />
-        {cards.map(
+        <Filter setNameFilter={ this.setNameFilter } />
+
+        {!filterName ? cards.map(
           ({
             cardName: name,
             cardDescription: desc,
@@ -167,6 +178,32 @@ class App extends React.Component {
             cardTrunfo: trunfo,
           }) => (
             <Card
+              key={ name }
+              cardName={ name }
+              cardDescription={ desc }
+              cardAttr1={ atr1 }
+              cardAttr2={ atr2 }
+              cardAttr3={ atr3 }
+              cardImage={ img }
+              cardRare={ rare }
+              cardTrunfo={ trunfo }
+              buttonDelete
+              renewCards={ this.renewCards }
+            />
+          ),
+        ) : cards.map(
+          ({
+            cardName: name,
+            cardDescription: desc,
+            cardAttr1: atr1,
+            cardAttr2: atr2,
+            cardAttr3: atr3,
+            cardImage: img,
+            cardRare: rare,
+            cardTrunfo: trunfo,
+          }) => (
+            name.includes(filterName)
+            && <Card
               key={ name }
               cardName={ name }
               cardDescription={ desc }
